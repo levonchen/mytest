@@ -6,5 +6,5 @@ using namespace std;
 
 void print_hello()
 {
-    count<<"Hello world!";
+    cout<<"Hello world!";
 }
