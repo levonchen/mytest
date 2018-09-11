@@ -1,4 +1,6 @@
 
 project("hello")
 
-add_executable( hello main.cpp factorial.cpp hello.cpp)
+aux_source_directory(. DIRSRCS)
+
+add_executable( hello $(DIRSRCS))
