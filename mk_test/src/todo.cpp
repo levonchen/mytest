@@ -20,7 +20,7 @@ void CToDo::addTask(const std::string& task)
     this_tasks.push_back(task);
 }
 
-std::string CToDo::getTask(size_t index)
+std::string CToDo::getTask(size_t index) const
 {
     if( index < this_tasks.size())
     {
