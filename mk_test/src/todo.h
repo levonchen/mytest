@@ -21,6 +21,6 @@ private:
 
     std::vector<std::string> this_tasks;
 
-}
+};
 
 #endif

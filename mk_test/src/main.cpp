@@ -14,7 +14,7 @@ int equalityTest(   const T1 testValue,
                     const char* testname,
                     const char* expectedName,
                     const char* fileName,
-                    const char* lineNumber);
+                    const int lineNumber);
 
 
 
@@ -46,7 +46,7 @@ int equalityTest(
     const char *testname,
     const char *expectedName,
     const char *fileName,
-    const char *lineNumber)
+    const int lineNumber)
 {
     if(testValue != expectedValue)
     {
