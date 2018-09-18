@@ -1,0 +1,53 @@
+body
+{
+    background-color:#fff;
+}
+
+.popover-content{
+    padding:5px;
+}
+
+table.pop td button{
+    height:28px;
+    width:28px;
+
+}
+
+table.table td {
+    height:50px;
+    width:40px;
+    min-width: 40px;
+    min-height: 50px;
+    font-size: 2em;
+    font-weight: 200;
+}
+
+td.bottom_border_cell {
+    border-bottom-color:palevioletred !important;
+}
+
+td.right_border_cell {
+    border-right-color:palevioletred !important;
+}
+
+td.middle_left {
+    background-color: beige;
+}
+td.middle_right {
+    background-color: burlywood;
+}
+
+td.bottom_left {
+    background-color:lightblue;
+}
+td.bottom_right {
+    background-color: peachpuff;
+}
+
+td.need_fill_txt {
+    color:red;
+}
+
+td.validate_error {
+    background-color:burlywood  !important;
+}
