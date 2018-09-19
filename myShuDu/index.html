@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.css"/>
-    <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap-theme.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
 
 	
-	 <link rel="stylesheet" type="text/css" href="site.css">
+	 <link rel="stylesheet" type="text/css" href="site.css?v=1">
    <title>数独</title>
     
       <script type="text/javascript">
@@ -20,15 +20,15 @@
    <body >
    
 
-      <div class="table-responsive container" id="tablecontent">
-        <div class="topoperation row text-center" style="margin: 20px">
+      <div class="container" id="tablecontent">
+        <div class="topoperation row text-center" style="margin: 5px">
           <select v-model="levelSelected">
             <option v-for="item in levelOptions" :value="item">{{item}}</option>
           </select>
           <button type="button" class="btn btn-primary" v-on:click="onStartClicked">开始</button>
           <button type="button" class="btn btn-primary" v-on:click="onCheckClicked">检查</button>
         </div>
-        <table class="table  table-bordered text-center">
+        <table class="mytable table  table-bordered text-center">
           <tbody>
             <tr v-for="(datarow,rindex) in table_data">
                 <td v-for="(cell,cindex) in datarow" v-bind:class="[cell.bottomClass,cell.rightClass,cell.txtColor,cell.errorClass]" v-on:click="cell.txtColor == 'need_fill_txt' ?cellClicked(datarow,cell,rindex,cindex,$event) : nothing()">{{ cell.value  }}</td>
@@ -41,9 +41,9 @@
         </div>
       </div>
 
-    <script src="./lib/jquery.js" type="text/javascript"></script>
-    <script src="./lib/bootstrap/js/bootstrap.js" type="text/javascript"></script>
-    <script src="./lib/vue.js" type="text/javascript"></script>
-     <script src="site.js" type="text/javascript"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.0/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js" type="text/javascript"></script>
+     <script src="site.js?v=1" type="text/javascript"></script>
    </body>
 </html>

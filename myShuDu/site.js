@@ -441,13 +441,18 @@ var tableContentVue = new Vue({
       var $this = this;
       var $row = rindex;
       var $column = cindex;
+
+      var content = "<table class='pop'>" 
+                  + "<tr><td><div><button>1</button> <button>2</button> <button>3</button></div> </td> </tr>" 
+                  + "<tr><td><button>4</button> <button>5</button> <button>6</button> </td> </tr>" 
+                  + "</table> "
       el.popover({
                     container:"body",
                     placement:'bottom',
                     trigger:'click', //触发方式                            
                     title:"",//设置 弹出框 的标题
                     html: true, // 为true的话，data-content里就能放html代码了
-                    content:"<table class='pop'> <tr><td><button>1</button> <button>2</button> <button>3</button> </td> </tr><tr>   <td>   <button>4</button> <button>5</button> <button>6</button> </td> </tr> </table> ",//这里可以直接写字符串，也可以 是一个函数，该函数返回一个字符串；
+                    content:content,//这里可以直接写字符串，也可以 是一个函数，该函数返回一个字符串；
                   });
       el.on('shown.bs.popover',function(args){
         var x = args;
