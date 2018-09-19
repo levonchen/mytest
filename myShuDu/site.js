@@ -1,20 +1,74 @@
 
-var table_born = [
-  [1,2,3,4,5,6],
-  [4,5,6,1,2,3],
 
+
+var SIZE = 6;
+var LEVEL_MAX = 10;
+
+//每个单元里面有 横竖 上有几个小的单元格
+var X_UNIT_WIDTH = 3;
+var Y_UNIT_HEIGHT = 2;
+
+// 横竖上有多少个单元
+var X_UNIT_COUNT = 2;
+var Y_UNIT_COUNT = 3;
+
+
+var table_born = [
+  [4,2,6,1,5,3],
+  [1,5,3,4,2,6],
   [5,6,1,2,3,4],
   [2,3,4,5,6,1],
-
-  [3,4,5,6,1,2],
-  [6,1,2,3,4,5]
+  [3,1,5,6,4,2],
+  [6,4,2,3,1,5]
 ];
 
+var ySwapOptions_6 = [
+  [0,1],
+  [2,3],
+  [4,5],
+];
+var xSwapOptions_6 = [
+  [0,1],
+  [1,2],
+  [0,2],
+  [3,4],
+  [4,5],
+  [3,5]
+]
+
+function getBornTable(){
+  return table_born;
+}
+
+function getYSwapOptions(){
+  return ySwapOptions_6;
+}
+
+function getXSwapOptions(){
+  return xSwapOptions_6;
+}
+
+function cloneTable_born(inputTable,size){
+  var outputTable = [
+    [0,0,0,0,0,0],
+    [0,0,0,0,0,0],
+    [0,0,0,0,0,0],
+    [0,0,0,0,0,0],
+    [0,0,0,0,0,0],
+    [0,0,0,0,0,0]
+  ];
+  for(var y = 0; y < size; y++){
+    for(var x = 0; x < size; x++){
+      outputTable[y][x] = inputTable[y][x];
+    }
+  }
+  return outputTable;
+}
 
 
 //y1列和y2列互换, x1,x2行互换
 function swapRow(inputTable,y1,y2){
-  var outputTable = [
+ var outputTable = [
     [0,0,0,0,0,0],
     [0,0,0,0,0,0],
     [0,0,0,0,0,0],
@@ -70,16 +124,6 @@ function swapColumn(inputTable,x1,x2){
   return outputTable;
 }
 
-var SIZE = 6;
-var LEVEL_MAX = 10;
-
-//每个单元里面有 横竖 上有几个小的单元格
-var X_UNIT_WIDTH = 3;
-var Y_UNIT_HEIGHT = 2;
-
-// 横竖上有多少个单元
-var X_UNIT_COUNT = 2;
-var Y_UNIT_COUNT = 3;
 
 function checkUnitCells(viewDataTable ){
 
@@ -160,8 +204,8 @@ function maskCells(inputTable,level){
   for(var index = 0; index < count;index++){
 
     do{
-      var x = Math.floor(Math.random() * 6);
-      var y = Math.floor(Math.random() * 6);
+      var x = Math.floor(Math.random() * SIZE);
+      var y = Math.floor(Math.random() * SIZE);
 
       if(inputTable[y][x] > 0){
         inputTable[y][x] = 0;
@@ -173,13 +217,43 @@ function maskCells(inputTable,level){
   return inputTable;
 }
 
+function confuseInitTable(level){
+
+  var cfCount = 1;
+  if(level > 4){
+    cfCount = 2;
+  }
+  if(level > 7){
+    cfCount = 3;
+  }
+
+  if(level >= 9){
+    cfCount = 4;
+  }
+
+  var bornT = cloneTable_born(getBornTable(),SIZE);
+
+  for(var index = 0; index < cfCount; index++)
+  {
+    var yoptions = getYSwapOptions();
+    var yIndex = Math.floor(Math.random() * yoptions.length);
+    var swapY = yoptions[yIndex];
+    bornT = swapRow(bornT,swapY[0],swapY[1]);
+
+    var xoptions = getXSwapOptions();
+    var xIndex = Math.floor(Math.random() * xoptions.length);
+    var swapX = xoptions[xIndex];
+    bornT = swapColumn(bornT,swapX[0],swapX[1]);
+  }
+
+  return bornT;   
+}
 
 function bornStartTable(level){
 
-    var output = swapRow(table_born,0,1);
-    var output1 = swapColumn(output,0,2);
+    var output = confuseInitTable(level);
 
-    var resultTable = maskCells(output1,level);
+    var resultTable = maskCells(output,level);
 
     var init_data = [];
 
@@ -309,15 +383,15 @@ function checkValidate(viewDataTable)
    return viewDataTable;
 }
 
-
-
-
-
 var tableContentVue = new Vue({
   el:"#tablecontent",
   data:{
     table_data:bornStartTable(1),
-    levelSelected: 1, 
+    feedback: {
+      eleClass:"feedbackSucceed",
+      value:"——"
+    },
+    levelSelected: 1    
   },
   computed:{
     selectedClass:function(rindex){
@@ -339,9 +413,28 @@ var tableContentVue = new Vue({
     onStartClicked:function(){
       var level = this.levelSelected;
       this.table_data = bornStartTable(level);
+      this.feedback.value = "---------";
     },
     onCheckClicked:function(){
       this.table_data = checkValidate(this.table_data);
+      var error_count = 0;
+      for(var y = 0; y <SIZE; y++)
+      {
+        for(var x = 0; x < SIZE; x++)
+        {
+          var item = this.table_data[y][x];
+          if(item.errorClass == "validate_error"){
+            error_count ++;
+          }
+        }
+      };
+      if(error_count == 0){
+        this.feedback.eleClass = "feedbackSucceed";
+        this.feedback.value = "哇你成功了"
+      }else{
+        this.feedback.eleClass = "feedbackFailed"
+        this.feedback.value = "继续努力啊!!!";
+      }
     },
     cellClicked:function(rdata,cdata,rindex,cindex,event){
       var el = $(event.currentTarget);
@@ -368,7 +461,7 @@ var tableContentVue = new Vue({
           //el.text(text);
           $this.table_data[$row][$column].value = Number(text);
           //$this.$forceUpdate()
-          el.popover('destroy');
+          //el.popover('destroy');
         });
       })
       el.popover('show');
@@ -396,34 +489,14 @@ var tableContentVue = new Vue({
   }
 });
 
-// var testVue = new Vue({
-//   el:"#testdiv",
-//   data:{
-//     value:""
-//   },
-
-//   methods:{
-//     tablenameclick:function(table){
-//       alert('Hello ' + table.name + '!');
-//     }
-//   }
-// });
-
-
 $(document).ready(function(){
    //$('.popover-show').popover('show');
-
   // $('button').popover({html : true });
 
    $('html').on('click', function (e) {
     $('div.popover').each(function () {
-        //the 'is' for buttons that trigger popups
-        //the 'has' for icons within a button that triggers a popup
-        // if (!$(this).is(e.target) 
-        // && $(this).has(e.target).length === 0 
-        // && $('.popover').has(e.target).length === 0) {
-        //     $(this).popover('destroy');
-        // }
+
+        console.log("Force close");
         var cellElement = $(e.target);
         var id = cellElement.attr("aria-describedby");
         var thisId = $(this).attr("id");

@@ -7,6 +7,17 @@ body
     padding:5px;
 }
 
+div.topoperation{
+    height: 80px;
+    padding-top: 20px
+}
+
+div.topoperation select{
+    width:80px;
+    height:32px;
+  
+}
+
 table.pop td button{
     height:28px;
     width:28px;
@@ -50,4 +61,15 @@ td.need_fill_txt {
 
 td.validate_error {
     background-color:burlywood  !important;
+}
+
+span.feedbackSucceed {
+    color:green;
+    font-size: 32px;
+}
+
+span.feedbackFailed {
+    color:red;
+
+    font-size: 32px;
 }
